@@ -1,0 +1,38 @@
+﻿---
+// Base layout imports global.css once and renders a header + slot
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+---    
+<!doctype html>
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <slot name="head"></slot>
+  </head>
+  <body class="min-h-dvh bg-[--color-surface] text-[--color-content] antialiased">
+    <SiteHeader />
+    <main class="mx-auto max-w-3xl p-6">
+      <slot />
+    </main>
+
+    <script is:inline>
+      (function () {
+        try {
+          var d = document.documentElement;
+          var stored = localStorage.getItem("theme");
+          if (stored === "dark") { d.classList.add("dark"); } else { d.classList.remove("dark"); }
+          document.addEventListener("click", function (e) {
+            var btn = e.target && e.target.closest && e.target.closest("#theme-toggle");
+            if (!btn) return;
+            var on = !d.classList.contains("dark");
+            d.classList.toggle("dark", on);
+            localStorage.setItem("theme", on ? "dark" : "light");
+          }, true);
+        } catch(e) {}
+      })();
+    </script>
+  </body>
+</html>
